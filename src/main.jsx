@@ -4,11 +4,11 @@ import App from './App.jsx'
 import './index.css'
 import { registerSW } from 'virtual:pwa-register'
 
+// Register service worker
 const updateSW = registerSW({
   onNeedRefresh() {
-    // Show a prompt to the user
-    if (confirm('New content available, click on reload button to update.')) {
-      updateSW()
+    if (confirm('New content available. Click OK to update.')) {
+      updateSW(true)
     }
   },
   onOfflineReady() {
