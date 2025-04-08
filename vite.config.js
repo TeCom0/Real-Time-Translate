@@ -32,12 +32,12 @@ export default defineConfig({
         background_color: '#ffffff',
         icons: [
           {
-            src: '/Real-Time-Translate/icon-192x192.png',
+            src: 'icon-192x192.png',
             sizes: '192x192',
             type: 'image/png'
           },
           {
-            src: '/Real-Time-Translate/icon-512x512.png',
+            src: 'icon-512x512.png',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'any maskable'
@@ -54,8 +54,20 @@ export default defineConfig({
               cacheName: 'api-cache'
             }
           }
-        ]
+        ],
+        navigateFallback: null
+      },
+      devOptions: {
+        enabled: true
       }
     })
-  ]
+  ],
+  server: {
+    port: 5173,
+    strictPort: true
+  },
+  preview: {
+    port: 5173,
+    strictPort: true
+  }
 }) 
