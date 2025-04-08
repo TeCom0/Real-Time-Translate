@@ -1,2 +1,21 @@
-if(!self.define){let e,s={};const i=(i,n)=>(i=new URL(i+".js",n).href,s[i]||new Promise((s=>{if("document"in self){const e=document.createElement("script");e.src=i,e.onload=s,document.head.appendChild(e)}else e=i,importScripts(i),s()})).then((()=>{let e=s[i];if(!e)throw new Error(`Module ${i} didn’t register its module`);return e})));self.define=(n,r)=>{const t=e||("document"in self?document.currentScript.src:"")||location.href;if(s[t])return;let o={};const l=e=>i(e,t),c={module:{uri:t},exports:o,require:l};s[t]=Promise.all(n.map((e=>c[e]||l(e)))).then((e=>(r(...e),o)))}}define(["./workbox-0225851e"],(function(e){"use strict";self.skipWaiting(),e.clientsClaim(),e.precacheAndRoute([{url:"assets/index-c4bb4249.css",revision:null},{url:"assets/index-e11f7069.js",revision:null},{url:"assets/vendor-9e916cc2.js",revision:null},{url:"assets/workbox-window.prod.es5-5ffdab76.js",revision:null},{url:"index.html",revision:"6e8b64e58446cff2958dfe4b8fa72ffe"},{url:"Real-Time-Translate/sw.js",revision:"9aab148d9b49fb37179feff4fccbab4f"},{url:"manifest.webmanifest",revision:"709c5c0c1bda68dd3c78ead2f6247308"}],{}),e.cleanupOutdatedCaches(),e.registerRoute(/^https:\/\/api\.mymemory\.translated\.net\/.*/i,new e.NetworkFirst({cacheName:"api-cache",plugins:[]}),"GET")}));
+const s = "translate-app-v1", t = [
+  "/Real-Time-Translate/",
+  "/Real-Time-Translate/index.html",
+  "/Real-Time-Translate/src/main.jsx",
+  "/Real-Time-Translate/src/App.jsx",
+  "/Real-Time-Translate/src/index.css",
+  "/Real-Time-Translate/src/services/SpeechService.js",
+  "/Real-Time-Translate/src/services/TranslationService.js",
+  "/Real-Time-Translate/manifest.json"
+];
+self.addEventListener("install", (e) => {
+  e.waitUntil(
+    caches.open(s).then((a) => a.addAll(t))
+  );
+});
+self.addEventListener("fetch", (e) => {
+  e.respondWith(
+    caches.match(e.request).then((a) => a || fetch(e.request))
+  );
+});
 //# sourceMappingURL=sw.js.map
