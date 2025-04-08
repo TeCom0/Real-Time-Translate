@@ -7,12 +7,7 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      strategies: 'injectManifest',
-      injectRegister: 'auto',
       registerType: 'autoUpdate',
-      injectManifest: {
-        injectionPoint: undefined
-      },
       manifest: {
         name: 'Real Time Translate',
         short_name: 'Translate',
@@ -23,25 +18,17 @@ export default defineConfig({
         background_color: '#ffffff',
         icons: [
           {
-            src: '/Real-Time-Translate/icon-192x192.png',
+            src: 'icon-192x192.png',
             sizes: '192x192',
             type: 'image/png'
           },
           {
-            src: '/Real-Time-Translate/icon-512x512.png',
+            src: 'icon-512x512.png',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'any maskable'
           }
         ]
-      },
-      workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
-        navigateFallback: '/Real-Time-Translate/index.html'
-      },
-      devOptions: {
-        enabled: true,
-        type: 'module'
       }
     })
   ]
