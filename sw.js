@@ -1,2 +1,20 @@
-if(!self.define){let e,s={};const i=(i,n)=>(i=new URL(i+".js",n).href,s[i]||new Promise((s=>{if("document"in self){const e=document.createElement("script");e.src=i,e.onload=s,document.head.appendChild(e)}else e=i,importScripts(i),s()})).then((()=>{let e=s[i];if(!e)throw new Error(`Module ${i} didn’t register its module`);return e})));self.define=(n,t)=>{const r=e||("document"in self?document.currentScript.src:"")||location.href;if(s[r])return;let a={};const c=e=>i(e,r),o={module:{uri:r},exports:a,require:c};s[r]=Promise.all(n.map((e=>o[e]||c(e)))).then((e=>(t(...e),a)))}}define(["./workbox-42774e1b"],(function(e){"use strict";self.skipWaiting(),e.clientsClaim(),e.precacheAndRoute([{url:"assets/index-23495ce1.js",revision:null},{url:"assets/index-c4bb4249.css",revision:null},{url:"index.html",revision:"e6a453ba528dc66ca5947051cf2da749"},{url:"manifest.json",revision:"55a4603c4046b8be9d958acfc9899cf3"},{url:"Real-Time-Translate/manifest.json",revision:"4af16d67054129578bebb42c2a124c63"},{url:"Real-Time-Translate/sw.js",revision:"9aab148d9b49fb37179feff4fccbab4f"},{url:"registerSW.js",revision:"620a68efbca4864ae75156b154c4f96e"},{url:"manifest.webmanifest",revision:"709c5c0c1bda68dd3c78ead2f6247308"}],{}),e.cleanupOutdatedCaches(),e.registerRoute(new e.NavigationRoute(e.createHandlerBoundToURL("index.html"))),e.registerRoute(/^https:\/\/api\.mymemory\.translated\.net\/.*/i,new e.NetworkFirst({cacheName:"api-cache",plugins:[new e.ExpirationPlugin({maxEntries:100,maxAgeSeconds:86400}),new e.CacheableResponsePlugin({statuses:[0,200]})]}),"GET")}));
-//# sourceMappingURL=sw.js.map
+const s = "translate-app-v1", t = [
+  "/Real-Time-Translate/",
+  "/Real-Time-Translate/index.html",
+  "/Real-Time-Translate/src/main.jsx",
+  "/Real-Time-Translate/src/App.jsx",
+  "/Real-Time-Translate/src/index.css",
+  "/Real-Time-Translate/src/services/SpeechService.js",
+  "/Real-Time-Translate/src/services/TranslationService.js",
+  "/Real-Time-Translate/manifest.json"
+];
+self.addEventListener("install", (e) => {
+  e.waitUntil(
+    caches.open(s).then((a) => a.addAll(t))
+  );
+});
+self.addEventListener("fetch", (e) => {
+  e.respondWith(
+    caches.match(e.request).then((a) => a || fetch(e.request))
+  );
+});

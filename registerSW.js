@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/Real-Time-Translate/sw.js', { scope: '/Real-Time-Translate/' })})}
