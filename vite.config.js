@@ -8,6 +8,9 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
+      devOptions: {
+        enabled: true
+      },
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
       manifest: {
         name: 'Real Time Translate',
@@ -19,12 +22,12 @@ export default defineConfig({
         background_color: '#ffffff',
         icons: [
           {
-            src: '/Real-Time-Translate/icon-192x192.png',
+            src: 'icon-192x192.png',
             sizes: '192x192',
             type: 'image/png'
           },
           {
-            src: '/Real-Time-Translate/icon-512x512.png',
+            src: 'icon-512x512.png',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'any maskable'
@@ -48,7 +51,9 @@ export default defineConfig({
               }
             }
           }
-        ]
+        ],
+        cleanupOutdatedCaches: true,
+        sourcemap: true
       }
     })
   ],
