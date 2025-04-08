@@ -1,12 +1,13 @@
 const CACHE_NAME = 'translate-app-v1';
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/src/main.jsx',
-  '/src/App.jsx',
-  '/src/index.css',
-  '/src/services/SpeechService.js',
-  '/src/services/TranslationService.js'
+  '/Real-Time-Translate/',
+  '/Real-Time-Translate/index.html',
+  '/Real-Time-Translate/src/main.jsx',
+  '/Real-Time-Translate/src/App.jsx',
+  '/Real-Time-Translate/src/index.css',
+  '/Real-Time-Translate/src/services/SpeechService.js',
+  '/Real-Time-Translate/src/services/TranslationService.js',
+  '/Real-Time-Translate/manifest.json'
 ];
 
 self.addEventListener('install', (event) => {
