@@ -23,13 +23,20 @@ function App() {
   const [translatedText, setTranslatedText] = useState('');
   const [error, setError] = useState('');
   const [isTranslating, setIsTranslating] = useState(false);
-  const [speechServiceInstance, setSpeechServiceInstance] = useState(null);
+  const [isSpeechSupported, setIsSpeechSupported] = useState(false);
 
   useEffect(() => {
     try {
-      setSpeechServiceInstance(speechService);
+      // Check if speech recognition is supported
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (SpeechRecognition && window.speechSynthesis) {
+        setIsSpeechSupported(true);
+      } else {
+        setError('Speech recognition is not supported in your browser. Please try using Chrome, Edge, or Safari.');
+      }
     } catch (err) {
-      setError('Speech recognition is not supported in your browser. Please try using Chrome, Edge, or Safari.');
+      console.error('Speech service initialization error:', err);
+      setError('Failed to initialize speech services. Please try using a different browser.');
     }
   }, []);
 
@@ -41,6 +48,7 @@ function App() {
       setTranslatedText(translation);
       await speechService.speak(translation, targetLanguage);
     } catch (err) {
+      console.error('Translation error:', err);
       setError('Translation failed. Please try again.');
     } finally {
       setIsTranslating(false);
@@ -48,24 +56,26 @@ function App() {
   }, [sourceLanguage, targetLanguage]);
 
   const handleSpeechError = useCallback((event) => {
+    console.error('Speech recognition error:', event);
     setError('Speech recognition error. Please try again.');
     setIsListening(false);
   }, []);
 
   const handleMicClick = () => {
-    if (!speechServiceInstance) {
-      setError('Speech service is not initialized. Please try using a supported browser.');
+    if (!isSpeechSupported) {
+      setError('Speech recognition is not supported in your browser.');
       return;
     }
 
     if (isListening) {
-      speechServiceInstance.stopListening();
+      speechService.stopListening();
       setIsListening(false);
     } else {
       try {
-        speechServiceInstance.startListening(sourceLanguage, handleSpeechResult, handleSpeechError);
+        speechService.startListening(sourceLanguage, handleSpeechResult, handleSpeechError);
         setIsListening(true);
       } catch (err) {
+        console.error('Microphone access error:', err);
         setError('Could not access microphone. Please check permissions.');
       }
     }
@@ -73,12 +83,12 @@ function App() {
 
   useEffect(() => {
     return () => {
-      if (speechServiceInstance) {
-        speechServiceInstance.stopListening();
-        speechServiceInstance.cancelSpeaking();
+      if (isListening) {
+        speechService.stopListening();
+        speechService.cancelSpeaking();
       }
     };
-  }, []);
+  }, [isListening]);
 
   return (
     <Container maxWidth="sm">
@@ -118,6 +128,7 @@ function App() {
             color={isListening ? 'error' : 'primary'}
             sx={{ width: 80, height: 80 }}
             onClick={handleMicClick}
+            disabled={!isSpeechSupported}
           >
             <MicIcon sx={{ fontSize: 40 }} />
           </IconButton>

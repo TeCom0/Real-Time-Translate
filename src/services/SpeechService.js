@@ -23,6 +23,9 @@ class SpeechService {
   }
 
   startListening(language, onResult, onError) {
+    if (!this.recognition) {
+      throw new Error('Speech recognition is not initialized');
+    }
     this.recognition.lang = language;
     this.recognition.onresult = (event) => {
       const result = event.results[event.results.length - 1];
@@ -35,10 +38,15 @@ class SpeechService {
   }
 
   stopListening() {
-    this.recognition.stop();
+    if (this.recognition) {
+      this.recognition.stop();
+    }
   }
 
   speak(text, language) {
+    if (!this.synthesis) {
+      throw new Error('Speech synthesis is not initialized');
+    }
     return new Promise((resolve, reject) => {
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = language;
@@ -49,8 +57,12 @@ class SpeechService {
   }
 
   cancelSpeaking() {
-    this.synthesis.cancel();
+    if (this.synthesis) {
+      this.synthesis.cancel();
+    }
   }
 }
 
-export default new SpeechService();
+// Create a singleton instance
+const speechService = new SpeechService();
+export default speechService;
