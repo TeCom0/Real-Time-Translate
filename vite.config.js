@@ -9,6 +9,9 @@ export default defineConfig({
     assetsDir: 'assets',
     sourcemap: true,
     rollupOptions: {
+      input: {
+        main: './index.html'
+      },
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom', '@mui/material', '@emotion/react', '@emotion/styled']
@@ -19,15 +22,19 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
+      strategies: 'injectManifest',
+      injectRegister: 'auto',
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
+      injectManifest: {
+        injectionPoint: undefined
+      },
       manifest: {
         name: 'Real Time Translate',
         short_name: 'Translate',
         description: 'Real-time voice translation app',
         theme_color: '#1976d2',
-        start_url: '/Real-Time-Translate/',
-        scope: '/Real-Time-Translate/',
+        start_url: '.',
+        scope: '.',
         display: 'standalone',
         background_color: '#ffffff',
         icons: [
@@ -55,10 +62,11 @@ export default defineConfig({
             }
           }
         ],
-        navigateFallback: null
+        navigateFallback: 'index.html'
       },
       devOptions: {
-        enabled: true
+        enabled: true,
+        type: 'module'
       }
     })
   ],
