@@ -7,11 +7,12 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
+      strategies: 'injectManifest',
+      injectRegister: 'auto',
       registerType: 'autoUpdate',
-      devOptions: {
-        enabled: true
+      injectManifest: {
+        injectionPoint: undefined
       },
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
       manifest: {
         name: 'Real Time Translate',
         short_name: 'Translate',
@@ -22,12 +23,12 @@ export default defineConfig({
         background_color: '#ffffff',
         icons: [
           {
-            src: 'icon-192x192.png',
+            src: '/Real-Time-Translate/icon-192x192.png',
             sizes: '192x192',
             type: 'image/png'
           },
           {
-            src: 'icon-512x512.png',
+            src: '/Real-Time-Translate/icon-512x512.png',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'any maskable'
@@ -35,26 +36,13 @@ export default defineConfig({
         ]
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,json}'],
-        runtimeCaching: [
-          {
-            urlPattern: /^https:\/\/api\.mymemory\.translated\.net\/.*/i,
-            handler: 'NetworkFirst',
-            options: {
-              cacheName: 'api-cache',
-              expiration: {
-                maxEntries: 100,
-                maxAgeSeconds: 60 * 60 * 24 // 24 hours
-              },
-              cacheableResponse: {
-                statuses: [0, 200]
-              }
-            }
-          }
-        ],
-        cleanupOutdatedCaches: true,
-        sourcemap: true
+        globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
+        navigateFallback: '/Real-Time-Translate/index.html'
+      },
+      devOptions: {
+        enabled: true,
+        type: 'module'
       }
     })
-  ],
+  ]
 }) 
